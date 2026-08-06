@@ -1,84 +1,125 @@
-![Neon Blackout hero](hero.png)
-
 # Neon Blackout
 
-A cyberpunk/synthwave design system on a near-black void. High-contrast neon, one spacing scale, one set of radii. Colors are mapped to the Intersex-Inclusive Progress Pride flag — every hue carries meaning.
-
-*Night city. A terminal in a hacker's basement. The void swallows everything — neon is the only light source.*
+A cyberpunk/synthwave design system on a near-black void. High-contrast neon,
+one spacing scale, one set of radii. Thirteen colours come from the
+Intersex-Inclusive Progress Pride flag at the flag's own hex values; two
+signature neons are ours.
 
 **License:** CC0 — free to use in any project.
 
 ---
 
-## Palette
+## The world
 
-### Surfaces
+Night city. A terminal in a hacker's basement. An AI running on backup power
+in a flooded server room. The security-cam green of a corporate firewall
+being breached.
 
-| Token | Hex | Usage |
-|---|---|---|
-| `--void` | `#050507` | Primary background |
-| `--elev` | `#12131c` | Cards, panels, elevated surfaces |
-| `--raised` | `#1a1a2e` | Transient UI only (modals, dropdowns, toasts) |
-| `--fg` | `#cfc8ee` | Primary text — lavender |
-| `--muted` | `#8e88ab` | Secondary text, labels, captions |
-| `--line` | `rgba(207,200,238,0.14)` | Borders, dividers |
-| `--line-soft` | `rgba(207,200,238,0.07)` | Subtle dividers |
+This is not a universe where neon decorates the streets — it *is* the only
+light source. The void has swallowed everything else. Surfaces exist only to
+be punctuated by light. Colour is emitted, not applied.
 
-### Heritage (flag → UI)
+Neon Blackout lives in the dark side of the 80s future. Not the one that was
+promised on postcards — the one that actually arrived.
 
-| Name | Hex | Role |
-|---|---|---|
-| Static Magenta | `#ff00aa` | Brand, primary action |
-| Signal Cyan | `#00fff0` | Focus, cursor, active indicator |
-| Lifeblood Red | `#ff3864` | Errors, destructive actions |
-| Pulse Green | `#39ff14` | Success, confirmed |
-| Sunlight | `#fcee09` | Warnings |
-| Harmony Blue | `#00aaff` | Info, structural accents |
-| Mending Orange | `#ff9f1c` | Staged, intermediate |
-| Spirit Violet | `#7b3fd4` | Accent (large text only) |
+## References, felt rather than listed
 
-### Typography
+The design alludes to its influences rather than wearing them on its sleeve.
+If you recognise them, you'll feel them in the spacing, the glow, the palette
+decisions:
 
-| Role | Font |
-|---|---|
-| Display | Audiowide |
-| Body | Space Grotesk Variable |
-| Mono | Space Mono (min 0.8rem) |
+- **Tron** — grid protocols, digital battlegrounds, light as the only terrain
+- **Blade Runner** — rain-slicked noir, perpetually dark cityscapes, neon reflected on wet pavement
+- **Terminator** — cold metallic dread, post-judgment day ruin, machine vision
+- **Videodrome** — analog corruption, cathode ray decay, the screen bleeding into the real
+- **The Matrix** — simulated existence, green-tinted code, the space between programs
+- **Total Recall** — corporate dystopia, unreliable reality, the line between implant and memory
+- **A Scanner Darkly** — identity erosion, scanner paranoia, the self as interference pattern
 
-### Spacing scale
+None of these are stated in the UI. They inform the *weight* of a button
+press, the *distance* between lines, the *temperature* of a glow.
 
-8px base. Tokens: `--space-4` (4px) through `--space-96` (96px). Use these for all padding, margin, and gaps — no arbitrary values.
+## Emotional register
 
-### Border radius
+- Paranoid, urgent, alive in the dark
+- The neon is a warning, not a decoration
+- Every glow is a signal — breach, heartbeat, countdown
+- The machine is watching. The machine is also dying.
+- This is the terminal, not the beach
 
-| Token | Value | Usage |
-|---|---|---|
-| `--radius-sm` | 4px | List items, subtle corners |
-| `--radius-md` | 6px | Buttons, inputs, toasts |
-| `--radius-lg` | 10px | Panels, cards, elevated surfaces |
-| `--radius-full` | 999px | Pills, badges |
-| `.circle` | 50% + 1:1 | Avatars, indicators |
+Emotional register is the spec. If a component feels like a Miami afternoon
+instead of a terminal in a basement, it's wrong, regardless of token values.
+The vibe is the lint check.
 
-### Glow system
+**Keywords:** void · breach · signal loss · flicker · backup power · dead
+channels · encrypted · ghost in the machine · neon decay · cathode ray · grid
+geometry · line noise
 
-8 colours × 4 strengths, composable utility classes. Pattern: `.glow-{color}-{strength}` where colour is one of `magenta`, `cyan`, `blue`, `green`, `red`, `yellow`, `orange`, `violet` and strength is `sm`, `md`, `lg`, `xl`. Text variant: `.glow-text-{color}`.
+## Design philosophy
+
+The references should be *felt*, not stated. A user should never read "Blade
+Runner" in the interface — but they should feel like it just rained on a city
+that never sleeps. This document is the only place the touchstones are made
+explicit, and only so anyone picking up the project understands *why* the void
+is `#050507` and not `#1a1a2e`.
 
 ---
+
+## Sister system
+
+[Neon Whiteout](https://github.com/annalinneajohansson82/neon-whiteout) is the
+sister system. The relationship is creative, not technical: the two started
+from the same idea, neon as a register, and went to opposite ends of it.
+
+| Neon Blackout | Neon Whiteout |
+|---|---|
+| Night city | Beachfront at 4 PM |
+| Terminal breach | Hot pink flamingo |
+| Void background | Bleached paper |
+| Tron / Blade Runner | Miami Vice / OutRun |
+| Glow — emission | Halo — scatter |
+| Paranoid 80s | Optimistic 80s |
+
+That contrast is the whole of it. Neon Blackout is standalone: no shared token
+contract, no interchangeable components, no obligation to match anything.
+Nothing here is derived from the sister system and nothing here should be
+justified by it. If a decision in this repo can only be explained by what
+another repo does, the decision is unexplained.
+
+---
+
+## Using it
+
+Drop the stylesheet and the fonts into your project:
+
+```
+neon-blackout.css
+fonts/
+```
+
+```html
+<link rel="stylesheet" href="neon-blackout.css">
+```
+
+The fonts are self-hosted and SIL Open Font Licensed. The stylesheet is the
+deliverable — it loads its own faces, so you get the real identity rather than
+a system fallback, with no CDN dependency and no GDPR exposure.
+
+Open `preview.html` in a browser to see every colour and component in use.
 
 ## Files
 
 | File | What |
 |---|---|
-| `dtcg-tokens.json` | Canonical DTCG token source — single source of truth |
-| `tokens.json` | Human-readable token reference with ANSI mappings |
-| `neon-blackout.css` | Production CSS with all tokens, glow system, component styles |
-| `component-spec.html` | Visual component spec — open in a browser |
-| `hermes/skins/neon-blackout.yaml` | Hermes TUI skin |
+| `README.md` | This. Identity, emotional register, sister-system relationship |
+| `CONTEXT.md` | Design principles, palette provenance, colour status, glow membership |
+| `tokens.json` | Canonical hex values, semantics, component specs, usage rules |
+| `neon-blackout.css` | The stylesheet |
+| `preview.html` | Every colour and component, in use |
+| `fonts/` | Audiowide, Space Grotesk, Space Mono — subset, self-hosted |
+| `tools/check-coherence.mjs` | Verifies the documents agree with what ships |
+| `hermes/skins/neon-blackout.yaml` | Terminal skin, consumes the ANSI layer |
 
-Uses `color-mix()` for background tints and `prefers-reduced-motion` / `prefers-contrast` for accessibility. WCAG 2.2 AA compliant across all interactive text pairings.
-
----
-
-## Related
-
-- **[Neon Whiteout](/home/anna/Projects/neon-whiteout)** — light-mode sister system. Same palette, inverted surfaces. Glow → Halo.
+When two documents disagree, the higher one in that list wins and the lower one
+is wrong. Run `node tools/check-coherence.mjs` to check the parts of that a
+machine can settle.

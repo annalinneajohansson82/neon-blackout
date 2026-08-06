@@ -1,0 +1,662 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Neon Blackout — preview</title>
+
+<!-- The system itself. This page is a consumer of the stylesheet, not a copy
+     of it: if neon-blackout.css breaks, this page breaks with it. -->
+<link rel="stylesheet" href="neon-blackout.css">
+
+<style>
+  /* Preview chrome only. Nothing here is part of the design system — it is
+     the sheet the system is laid out on. Anything a project would reuse
+     belongs in neon-blackout.css instead.
+
+     No contrast ratios are printed on this page. They live in tokens.json,
+     and a fourth place to state a number is a fourth place for it to drift. */
+
+  body { padding: var(--space-64) var(--space-24) var(--space-96); }
+  .sheet { max-width: 74rem; margin: 0 auto; }
+
+  .masthead { margin-bottom: var(--space-64); }
+  .masthead h1 {
+    font-family: var(--font-display);
+    font-size: clamp(1.9rem, 5vw, var(--text-4xl));
+    line-height: 1.05;
+    color: var(--resistance-magenta);
+    text-wrap: balance;
+    text-shadow: 0 0 10px color-mix(in srgb, var(--resistance-magenta) 55%, transparent),
+                 0 0 32px color-mix(in srgb, var(--resistance-magenta) 35%, transparent);
+  }
+  .masthead h1 .cyan {
+    color: var(--transition-cyan);
+    text-shadow: 0 0 10px color-mix(in srgb, var(--transition-cyan) 55%, transparent),
+                 0 0 32px color-mix(in srgb, var(--transition-cyan) 35%, transparent);
+  }
+  .standfirst {
+    max-width: 42rem;
+    color: var(--muted);
+    font-size: var(--text-lg);
+    line-height: 1.55;
+    margin-top: var(--space-16);
+  }
+
+  section { margin-top: var(--space-64); }
+  section > h2 {
+    font-family: var(--font-mono);
+    font-size: var(--text-mono-min);
+    font-weight: 400;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    padding-bottom: var(--space-8);
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--space-16);
+  }
+  section > h2 .count { color: var(--muted); letter-spacing: 0.08em; }
+  .lede {
+    color: var(--muted);
+    font-size: var(--text-sm);
+    max-width: 46rem;
+    margin: var(--space-16) 0 var(--space-24);
+  }
+
+  .scroll { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: var(--text-sm); }
+  th {
+    text-align: left;
+    font-family: var(--font-mono);
+    font-size: var(--text-mono-min);
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: var(--space-8) var(--space-12);
+    border-bottom: 1px solid var(--line-soft);
+    white-space: nowrap;
+  }
+  td {
+    padding: var(--space-12);
+    border-bottom: 1px solid var(--line-soft);
+    vertical-align: middle;
+  }
+  tr:last-child td { border-bottom: none; }
+  .mono { font-family: var(--font-mono); font-size: var(--text-mono-min); }
+  .hexcell { color: var(--muted); text-transform: uppercase; white-space: nowrap; }
+  .flagcell { color: var(--muted); white-space: nowrap; }
+  .rolecell { color: var(--transition-cyan); }
+  .unused td:not(:first-child) { opacity: 0.7; }
+
+  .swatch {
+    display: block;
+    width: 44px;
+    height: 28px;
+    border-radius: var(--radius-md);
+  }
+  .swatch.bordered { border: 1px solid var(--line); }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr));
+    gap: var(--space-24);
+    margin-top: var(--space-24);
+  }
+  .card {
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+  .card > h3 {
+    padding: var(--space-8) var(--space-16);
+    border-bottom: 1px solid var(--line-soft);
+    font-family: var(--font-mono);
+    font-size: var(--text-mono-min);
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .card-body {
+    padding: var(--space-24);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-16);
+  }
+  .row { display: flex; gap: var(--space-8); flex-wrap: wrap; align-items: center; }
+
+  /* Glow specimens: a lit tube, so emission reads as emission. A halo with no
+     visible core reads as a tinted shadow. */
+  .glow-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+    gap: var(--space-40);
+    margin-top: var(--space-32);
+  }
+  .glow-cell { display: flex; flex-direction: column; gap: var(--space-12); }
+  .glow-stage {
+    height: 6rem;
+    border: 1px solid var(--line-soft);
+    border-radius: var(--radius-lg);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-16);
+  }
+  .tube { display: block; width: 68%; height: 6px; border-radius: var(--radius-full); }
+  .tube-mag { background: var(--resistance-magenta); }
+  .tube-cyn { background: var(--transition-cyan); }
+  .tube-red { background: var(--lifeblood-red); }
+  .tube-yel { background: var(--sunlight-yellow); }
+  .tube-grn { background: var(--pulse-green); }
+  .tube-orn { background: var(--mending-orange); }
+  .tube-blu { background: var(--harmony-blue); }
+  .tube-vio { background: var(--spirit-violet); }
+
+  .scale-row {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-24);
+    padding: var(--space-8) 0;
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .scale-row .tok { font-family: var(--font-mono); font-size: var(--text-mono-min); color: var(--muted); min-width: 9rem; }
+  .space-bar { background: var(--resistance-magenta); height: 8px; border-radius: 2px; }
+  .radius-box {
+    width: 72px; height: 56px;
+    background: var(--remembrance-black);
+    border: 1px solid var(--line);
+    display: grid; place-items: center;
+    font-family: var(--font-mono); font-size: var(--text-mono-min); color: var(--muted);
+  }
+
+  footer {
+    margin-top: var(--space-96);
+    padding-top: var(--space-24);
+    border-top: 1px solid var(--line-soft);
+    font-family: var(--font-mono);
+    font-size: var(--text-mono-min);
+    color: var(--muted);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-8) var(--space-24);
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <header class="masthead">
+    <h1>Neon Blackout<br><span class="cyan">preview</span></h1>
+    <p class="standfirst">
+      Every colour and component the system ships, in use. This page loads
+      <code class="mono">neon-blackout.css</code> directly — if the stylesheet
+      breaks, this page breaks with it.
+    </p>
+  </header>
+
+  <!-- ── Surfaces ─────────────────────────────────────────────────────── -->
+  <section>
+    <h2>Surfaces <span class="count">3</span></h2>
+    <p class="lede">
+      Colour is emitted, never applied. Surfaces exist to be punctuated by
+      light. One of the three is heritage: <code class="mono">--remembrance-black</code>
+      is the flag's Black stripe, so it carries the heritage name rather than a
+      role name.
+    </p>
+    <div class="scroll">
+      <table>
+        <thead>
+          <tr><th></th><th>Token</th><th>Hex</th><th>Used for</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="swatch bordered" style="background: var(--void)"></span></td>
+            <td class="mono">--void</td>
+            <td class="mono hexcell">#050507</td>
+            <td>The dark everything sits in</td>
+          </tr>
+          <tr>
+            <td><span class="swatch bordered" style="background: var(--remembrance-black)"></span></td>
+            <td class="mono">--remembrance-black</td>
+            <td class="mono hexcell">#12131C</td>
+            <td>Raised surface, disabled input, skeleton base</td>
+          </tr>
+          <tr>
+            <td><span class="swatch bordered" style="background: var(--shimmer)"></span></td>
+            <td class="mono">--shimmer</td>
+            <td class="mono hexcell">#1A1A2E</td>
+            <td>Skeleton shimmer highlight. Nothing else.</td>
+          </tr>
+          <tr>
+            <td><span class="swatch" style="background: var(--fg)"></span></td>
+            <td class="mono">--fg</td>
+            <td class="mono hexcell">#CFC8EE</td>
+            <td>Primary text. Foreground lavender carries the words.</td>
+          </tr>
+          <tr>
+            <td><span class="swatch" style="background: var(--muted)"></span></td>
+            <td class="mono">--muted</td>
+            <td class="mono hexcell">#8E88AB</td>
+            <td>Secondary text, labels, captions</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ── Signature ────────────────────────────────────────────────────── -->
+  <section>
+    <h2>Signature neons <span class="count">2, ours</span></h2>
+    <p class="lede">
+      These carry flag-style names but are not flag colours. No magenta exists
+      in the Progress Pride flag, and the flag's Trans Blue is
+      <code class="mono">#5AD4EC</code>, not this turquoise. They are invented,
+      and naming them as heritage would misrepresent the flag. Because they are
+      ours, we revise them freely.
+    </p>
+    <div class="scroll">
+      <table>
+        <thead>
+          <tr><th></th><th>Token</th><th>Hex</th><th>Role</th><th>Used for</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="swatch" style="background: var(--resistance-magenta)"></span></td>
+            <td class="mono" style="color: var(--resistance-magenta)">--resistance-magenta</td>
+            <td class="mono hexcell">#FF00AA</td>
+            <td class="mono rolecell">primary</td>
+            <td>Brand identity, primary action</td>
+          </tr>
+          <tr>
+            <td><span class="swatch" style="background: var(--transition-cyan)"></span></td>
+            <td class="mono" style="color: var(--transition-cyan)">--transition-cyan</td>
+            <td class="mono hexcell">#00FFF0</td>
+            <td class="mono rolecell">focus</td>
+            <td>Focus, cursor, active indicator, links</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ── Heritage, in use ─────────────────────────────────────────────── -->
+  <section>
+    <h2>Heritage, carrying a role <span class="count">7 of 13</span></h2>
+    <p class="lede">
+      Taken from the Intersex-Inclusive Progress Pride flag at their exact hex
+      values. Heritage membership is a test, not a preference: a colour is
+      heritage if it appears on the flag. These are never tuned — a heritage
+      colour altered is a colour that no longer refers to the thing it is
+      named for.
+    </p>
+    <div class="scroll">
+      <table>
+        <thead>
+          <tr><th></th><th>Token</th><th>Hex</th><th>Flag colour</th><th>Role</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="swatch" style="background: var(--lifeblood-red)"></span></td>
+            <td class="mono">--lifeblood-red</td><td class="mono hexcell">#FF3864</td>
+            <td class="flagcell">Life</td><td class="mono rolecell">error</td>
+          </tr>
+          <tr>
+            <td><span class="swatch" style="background: var(--mending-orange)"></span></td>
+            <td class="mono">--mending-orange</td><td class="mono hexcell">#FF9F1C</td>
+            <td class="flagcell">Healing</td><td class="mono rolecell">staged</td>
+          </tr>
+          <tr>
+            <td><span class="swatch" style="background: var(--sunlight-yellow)"></span></td>
+            <td class="mono">--sunlight-yellow</td><td class="mono hexcell">#FCEE09</td>
+            <td class="flagcell">Sunlight</td><td class="mono rolecell">warning</td>
+          </tr>
+          <tr>
+            <td><span class="swatch" style="background: var(--pulse-green)"></span></td>
+            <td class="mono">--pulse-green</td><td class="mono hexcell">#39FF14</td>
+            <td class="flagcell">Nature</td><td class="mono rolecell">success</td>
+          </tr>
+          <tr>
+            <td><span class="swatch" style="background: var(--harmony-blue)"></span></td>
+            <td class="mono">--harmony-blue</td><td class="mono hexcell">#00AAFF</td>
+            <td class="flagcell">Harmony</td><td class="mono rolecell">info</td>
+          </tr>
+          <tr>
+            <td><span class="swatch" style="background: var(--spirit-violet)"></span></td>
+            <td class="mono">--spirit-violet</td><td class="mono hexcell">#7B3FD4</td>
+            <td class="flagcell">Spirit</td><td class="mono rolecell">accent, large text only</td>
+          </tr>
+          <tr>
+            <td><span class="swatch bordered" style="background: var(--remembrance-black)"></span></td>
+            <td class="mono">--remembrance-black</td><td class="mono hexcell">#12131C</td>
+            <td class="flagcell">Black</td><td class="mono rolecell">surface</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ── Heritage, unused ─────────────────────────────────────────────── -->
+  <section>
+    <h2>Heritage, shipping unused <span class="count">6 of 13</span></h2>
+    <p class="lede">
+      Declared as tokens, referenced by nothing. A heritage colour does not need
+      a job to deserve its place — it needs to be on the flag.
+    </p>
+    <div class="scroll">
+      <table>
+        <thead>
+          <tr><th></th><th>Token</th><th>Hex</th><th>Flag colour</th><th>Represents</th></tr>
+        </thead>
+        <tbody class="unused">
+          <tr>
+            <td><span class="swatch" style="background: var(--autonomy-yellow)"></span></td>
+            <td class="mono">--autonomy-yellow</td><td class="mono hexcell">#FFD800</td>
+            <td class="flagcell">Intersex Yellow</td><td>Free of the binary</td>
+          </tr>
+          <tr>
+            <td><span class="swatch" style="background: var(--wholeness-violet)"></span></td>
+            <td class="mono">--wholeness-violet</td><td class="mono hexcell">#C20FF0</td>
+            <td class="flagcell">Intersex Purple</td><td>Wholeness, autonomy</td>
+          </tr>
+          <tr>
+            <td><span class="swatch" style="background: var(--becoming-white)"></span></td>
+            <td class="mono">--becoming-white</td><td class="mono hexcell">#FFFFFF</td>
+            <td class="flagcell">White</td><td>Trans, nonbinary</td>
+          </tr>
+          <tr>
+            <td><span class="swatch" style="background: var(--trans-pink)"></span></td>
+            <td class="mono">--trans-pink</td><td class="mono hexcell">#FF8FD8</td>
+            <td class="flagcell">Trans Pink</td><td>Trans community</td>
+          </tr>
+          <tr>
+            <td><span class="swatch" style="background: var(--trans-blue)"></span></td>
+            <td class="mono">--trans-blue</td><td class="mono hexcell">#5AD4EC</td>
+            <td class="flagcell">Trans Blue</td><td>Trans community</td>
+          </tr>
+          <tr>
+            <td><span class="swatch" style="background: var(--kinship-brown)"></span></td>
+            <td class="mono">--kinship-brown</td><td class="mono hexcell">#C98745</td>
+            <td class="flagcell">Brown</td><td>People of colour</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ── Glow ─────────────────────────────────────────────────────────── -->
+  <section>
+    <h2>Glow <span class="count">8 colours, 4 strengths</span></h2>
+    <p class="lede">
+      Emission in darkness. Colours derive from palette tokens via
+      <code class="mono">color-mix</code>, never from literals — a hardcoded
+      rgba is a second source of colour that drifts silently. Strengths are
+      uniform across all eight: perceived intensity is almost entirely the
+      core, so a per-colour ceiling on the bloom is invisible, and capping the
+      core removes the punch the system is built on. Intensity is controlled by
+      <code class="mono">prefers-contrast</code> and
+      <code class="mono">--glow-enabled</code>, which follow the viewer's own
+      setting.
+    </p>
+    <div class="glow-grid">
+      <div class="glow-cell">
+        <div class="glow-stage"><span class="tube tube-yel glow glow-yellow glow-max"></span>
+          <span class="mono glow-text glow-yellow glow-default" style="color: var(--sunlight-yellow)">yellow</span></div>
+        <span class="mono" style="color: var(--muted)">--sunlight-yellow</span>
+      </div>
+      <div class="glow-cell">
+        <div class="glow-stage"><span class="tube tube-cyn glow glow-cyan glow-max"></span>
+          <span class="mono glow-text glow-cyan glow-default" style="color: var(--transition-cyan)">cyan</span></div>
+        <span class="mono" style="color: var(--muted)">--transition-cyan</span>
+      </div>
+      <div class="glow-cell">
+        <div class="glow-stage"><span class="tube tube-grn glow glow-green glow-max"></span>
+          <span class="mono glow-text glow-green glow-default" style="color: var(--pulse-green)">green</span></div>
+        <span class="mono" style="color: var(--muted)">--pulse-green</span>
+      </div>
+      <div class="glow-cell">
+        <div class="glow-stage"><span class="tube tube-orn glow glow-orange glow-max"></span>
+          <span class="mono glow-text glow-orange glow-default" style="color: var(--mending-orange)">orange</span></div>
+        <span class="mono" style="color: var(--muted)">--mending-orange</span>
+      </div>
+      <div class="glow-cell">
+        <div class="glow-stage"><span class="tube tube-blu glow glow-blue glow-max"></span>
+          <span class="mono glow-text glow-blue glow-default" style="color: var(--harmony-blue)">blue</span></div>
+        <span class="mono" style="color: var(--muted)">--harmony-blue</span>
+      </div>
+      <div class="glow-cell">
+        <div class="glow-stage"><span class="tube tube-red glow glow-red glow-max"></span>
+          <span class="mono glow-text glow-red glow-default" style="color: var(--lifeblood-red)">red</span></div>
+        <span class="mono" style="color: var(--muted)">--lifeblood-red</span>
+      </div>
+      <div class="glow-cell">
+        <div class="glow-stage"><span class="tube tube-mag glow glow-magenta glow-max"></span>
+          <span class="mono glow-text glow-magenta glow-default" style="color: var(--resistance-magenta)">magenta</span></div>
+        <span class="mono" style="color: var(--muted)">--resistance-magenta</span>
+      </div>
+      <div class="glow-cell">
+        <div class="glow-stage"><span class="tube tube-vio glow glow-violet glow-max"></span>
+          <span class="mono glow-text glow-violet glow-default" style="color: var(--spirit-violet)">violet</span></div>
+        <span class="mono" style="color: var(--muted)">--spirit-violet</span>
+      </div>
+    </div>
+
+    <p class="lede" style="margin-top: var(--space-48)">
+      The four strengths, on magenta. Use <code class="mono">glow-max</code> on
+      at most one element per view: a page where everything is at maximum has no
+      hierarchy left, and accumulated bloom is where visual discomfort starts.
+    </p>
+    <div class="glow-grid">
+      <div class="glow-cell">
+        <div class="glow-stage"><span class="tube tube-mag glow glow-magenta glow-subtle"></span></div>
+        <span class="mono" style="color: var(--muted)">glow-subtle</span>
+      </div>
+      <div class="glow-cell">
+        <div class="glow-stage"><span class="tube tube-mag glow glow-magenta glow-default"></span></div>
+        <span class="mono" style="color: var(--muted)">glow-default</span>
+      </div>
+      <div class="glow-cell">
+        <div class="glow-stage"><span class="tube tube-mag glow glow-magenta glow-intense"></span></div>
+        <span class="mono" style="color: var(--muted)">glow-intense</span>
+      </div>
+      <div class="glow-cell">
+        <div class="glow-stage"><span class="tube tube-mag glow glow-magenta glow-max"></span></div>
+        <span class="mono" style="color: var(--muted)">glow-max</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Components ───────────────────────────────────────────────────── -->
+  <section>
+    <h2>Components <span class="count">12</span></h2>
+    <p class="lede">
+      The same colours doing their actual work. Warnings are Sunlight, focus is
+      Transition Cyan, primary is Resistance Magenta.
+    </p>
+
+    <div class="grid">
+
+      <div class="card">
+        <h3>Button</h3>
+        <div class="card-body">
+          <div class="row">
+            <button class="btn btn-primary glow glow-magenta glow-hover" type="button">Deploy</button>
+            <button class="btn btn-ghost" type="button">Cancel</button>
+          </div>
+          <div class="row">
+            <button class="btn btn-warn" type="button">Overwrite</button>
+            <button class="btn btn-danger" type="button">Destroy</button>
+          </div>
+          <div class="row">
+            <button class="btn btn-primary is-loading" type="button">Deploying</button>
+            <button class="btn btn-primary" type="button" disabled>Disabled</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Field</h3>
+        <div class="card-body">
+          <div class="field">
+            <label class="field-label" for="host">Host</label>
+            <input class="field-input" id="host" type="text" value="grid.local:8443">
+          </div>
+          <div class="field">
+            <label class="field-label" for="key">Signing key</label>
+            <input class="field-input error" id="key" type="text" value="expired">
+            <span class="field-err">Key expired 3 days ago. Rotate it to reconnect.</span>
+          </div>
+          <div class="field">
+            <label class="field-label" for="ro">Channel</label>
+            <input class="field-input" id="ro" type="text" value="locked" disabled>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Tag</h3>
+        <div class="card-body">
+          <div class="tag-row">
+            <span class="tag tag-mag">brand</span>
+            <span class="tag tag-cyn">active</span>
+            <span class="tag tag-grn">passing</span>
+            <span class="tag tag-yel">caution</span>
+          </div>
+          <div class="tag-row">
+            <span class="tag tag-orn">staged</span>
+            <span class="tag tag-blf">info</span>
+            <span class="tag tag-red">failed</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Toast</h3>
+        <div class="card-body">
+          <div class="toast-sample">
+            <span class="ok">handshake confirmed</span>
+            <span class="info">4 peers discovered</span>
+            <span class="staged">payload staged, awaiting signature</span>
+            <span class="warn">backup power at 14%</span>
+            <span class="err">signal lost on channel 3</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-bar">
+          <span class="panel-dot" style="background: var(--lifeblood-red)"></span>
+          <span class="panel-dot" style="background: var(--sunlight-yellow)"></span>
+          <span class="panel-dot" style="background: var(--pulse-green)"></span>
+          <span class="panel-title">grid.local</span>
+        </div>
+        <div class="panel-body">
+          <div class="list">
+            <div class="list-item" tabindex="0">
+              <span class="list-icon">&#9679;</span>
+              <span class="label">channel 1</span><span class="meta">open</span>
+            </div>
+            <div class="list-item" tabindex="0">
+              <span class="list-icon">&#9679;</span>
+              <span class="label">channel 2</span><span class="meta">open</span>
+            </div>
+            <div class="list-item" aria-disabled="true">
+              <span class="list-icon">&#9675;</span>
+              <span class="label">channel 3</span><span class="meta">lost</span>
+            </div>
+          </div>
+          <div class="divider-soft"></div>
+          <p style="font-size: var(--text-sm)">
+            Read the <a class="text-link" href="CONTEXT.md">provenance notes</a>
+            before changing a heritage hex.<span class="cursor-demo"></span>
+          </p>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>States</h3>
+        <div class="card-body">
+          <div class="row">
+            <span class="spinner" style="color: var(--transition-cyan)"></span>
+            <span class="mono">connecting</span>
+          </div>
+          <div>
+            <div class="skeleton"></div>
+            <div class="skeleton skeleton-bar"></div>
+            <div class="skeleton"></div>
+          </div>
+          <div class="empty-state">
+            <span class="icon">&#9633;</span>
+            <span class="title">No channels</span>
+            <span class="desc">Nothing is transmitting. Open a channel to begin.</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── Type ─────────────────────────────────────────────────────────── -->
+  <section>
+    <h2>Type <span class="count">1.25 scale, 16px base</span></h2>
+    <p class="lede">
+      Three faces, all SIL Open Font Licensed, all self-hosted. Mono has its own
+      floor at <code class="mono">--text-sm</code>: Space Mono carries a small
+      x-height for its size, and the densest text in this system is mono.
+    </p>
+    <div class="scale-row"><span class="tok">--text-4xl</span><span style="font-family: var(--font-display); font-size: var(--text-4xl)">Breach</span></div>
+    <div class="scale-row"><span class="tok">--text-3xl</span><span style="font-family: var(--font-display); font-size: var(--text-3xl)">Breach</span></div>
+    <div class="scale-row"><span class="tok">--text-2xl</span><span style="font-size: var(--text-2xl)">Signal lost</span></div>
+    <div class="scale-row"><span class="tok">--text-xl</span><span style="font-size: var(--text-xl)">Signal lost</span></div>
+    <div class="scale-row"><span class="tok">--text-lg</span><span style="font-size: var(--text-lg)">Backup power engaged</span></div>
+    <div class="scale-row"><span class="tok">--text-base</span><span style="font-size: var(--text-base)">Backup power engaged at fourteen percent</span></div>
+    <div class="scale-row"><span class="tok">--text-sm</span><span style="font-size: var(--text-sm)">Backup power engaged at fourteen percent</span></div>
+    <div class="scale-row"><span class="tok">--text-sm mono</span><span class="mono">[12:04:19] warn: backup power at 14%</span></div>
+    <div class="scale-row"><span class="tok">--text-xs</span><span style="font-size: var(--text-xs)">Body face only. Mono does not use this step.</span></div>
+  </section>
+
+  <!-- ── Spacing and radius ───────────────────────────────────────────── -->
+  <section>
+    <h2>Spacing <span class="count">8px base</span></h2>
+    <p class="lede">
+      All padding, margin, gap and dimensional values come from here. No
+      arbitrary rem values.
+    </p>
+    <div class="scale-row"><span class="tok">--space-4</span><span class="space-bar" style="width: var(--space-4)"></span></div>
+    <div class="scale-row"><span class="tok">--space-8</span><span class="space-bar" style="width: var(--space-8)"></span></div>
+    <div class="scale-row"><span class="tok">--space-12</span><span class="space-bar" style="width: var(--space-12)"></span></div>
+    <div class="scale-row"><span class="tok">--space-16</span><span class="space-bar" style="width: var(--space-16)"></span></div>
+    <div class="scale-row"><span class="tok">--space-24</span><span class="space-bar" style="width: var(--space-24)"></span></div>
+    <div class="scale-row"><span class="tok">--space-32</span><span class="space-bar" style="width: var(--space-32)"></span></div>
+    <div class="scale-row"><span class="tok">--space-40</span><span class="space-bar" style="width: var(--space-40)"></span></div>
+    <div class="scale-row"><span class="tok">--space-48</span><span class="space-bar" style="width: var(--space-48)"></span></div>
+    <div class="scale-row"><span class="tok">--space-64</span><span class="space-bar" style="width: var(--space-64)"></span></div>
+    <div class="scale-row"><span class="tok">--space-80</span><span class="space-bar" style="width: var(--space-80)"></span></div>
+    <div class="scale-row"><span class="tok">--space-96</span><span class="space-bar" style="width: var(--space-96)"></span></div>
+  </section>
+
+  <section>
+    <h2>Radius <span class="count">4 plus a utility</span></h2>
+    <div class="row" style="margin-top: var(--space-24); gap: var(--space-16)">
+      <span class="radius-box" style="border-radius: var(--radius-sm)">sm</span>
+      <span class="radius-box" style="border-radius: var(--radius-md)">md</span>
+      <span class="radius-box" style="border-radius: var(--radius-lg)">lg</span>
+      <span class="radius-box" style="border-radius: var(--radius-full)">full</span>
+      <span class="radius-box circle" style="width: 56px">circle</span>
+    </div>
+  </section>
+
+  <footer>
+    <span>Neon Blackout</span>
+    <span>13 heritage &middot; 2 signature &middot; 3 surfaces</span>
+    <span>Audiowide &middot; Space Grotesk &middot; Space Mono, self-hosted</span>
+    <span>CC0</span>
+  </footer>
+
+</div>
+</body>
+</html>

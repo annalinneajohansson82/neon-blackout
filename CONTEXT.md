@@ -4,12 +4,6 @@ Neon Blackout is a cyberpunk/synthwave design system built on a near-black
 void, where neon is the only light source. This document is authoritative for
 design principles, palette provenance and colour status.
 
-**Status, 2026-08-06.** This document records the decisions of a grilling
-pass. The implementation artifacts have not yet been rewritten to match, so
-ranks 3 and 4 currently contradict this document on most of what follows, and
-some files named here do not exist yet. That is the work this pass authorises,
-not a description of what ships today.
-
 Nothing in this repository makes claims about the contents of another
 repository. Neon Blackout is described entirely by what ships here. A
 decision that can only be explained by what another repository does is a
@@ -24,7 +18,7 @@ Identity comes first. Technical artifacts derive from it, never the reverse.
 | 1 | `README.md` | Identity, emotional register, sister-system relationship |
 | 2 | `CONTEXT.md` | Design principles, palette provenance, colour status, glow membership |
 | 3 | `tokens.json` | Canonical hex values, semantics, component specs, usage rules |
-| 4 | `neon-blackout.css`, `component-spec.html` | Implementation and demonstration |
+| 4 | `neon-blackout.css`, `preview.html` | Implementation and demonstration |
 
 When two documents disagree, the higher-ranked one wins and the lower one is
 wrong. `node tools/check-coherence.mjs` enforces the parts of this that can be
@@ -37,8 +31,8 @@ this pass was mechanically detectable, and the radius, glow-API and font
 defects all shipped in the initial commit.
 
 `README.md` is the identity brief, not documentation. The palette, spacing,
-radius and glow tables it used to carry belong at ranks 2 and 3, and
-`docs/identity.md` merges into it rather than competing with it for rank 1.
+radius and glow tables it used to carry belong at ranks 2 and 3. The separate
+identity document was merged into it rather than competing for rank 1.
 
 `tokens.json` is rewritten rather than corrected. Both of the files it
 replaces described a system that no longer exists, and one of them claimed to
@@ -101,12 +95,12 @@ the flag.
 | `--resistance-magenta` | `#ff00aa` | Brand identity, primary action |
 | `--transition-cyan` | `#00fff0` | Focus, cursor, active indicator |
 
-There are two signature neons and no secondary siblings. Neon Whiteout has
-four, because on paper a softer neon means mixing toward white, and nothing
-else in that system occupies the space between a pastel tint and the full
-colour. On the void, softer means mixing toward the void, and the `-bg` tints
-already do exactly that at 12–15%. The tier NW had to invent, NB already had,
-built in the opposite direction.
+There are two signature neons and no secondary siblings. On a light surface a
+softer neon means mixing toward white, and a system built there needs an
+invented tier to sit between a pale tint and the full colour. On the void,
+softer means mixing toward the void, and the `-bg` tints already do exactly
+that at 12–15%. The space a secondary would occupy is already occupied, built
+in the opposite direction.
 
 The identity argues the same way. The neon is a warning, not a decoration, so
 a deliberately quieter brand colour would be working against the register.
@@ -162,10 +156,9 @@ on light surfaces have to solve that problem some other way; this one does
 not have it.
 
 `--autonomy-yellow` ships as a heritage token and is referenced by nothing.
-That is the same treatment NW gives `--sunlight-yellow`, so the two systems
-mirror each other: each carries the whole flag, each puts a different yellow
-to work. A heritage colour does not need a job to deserve its place. It needs
-to be on the flag.
+The flag has two yellows and this system needs one, so the other carries no
+role. A heritage colour does not need a job to deserve its place. It needs to
+be on the flag.
 
 ## Glow membership
 
@@ -238,7 +231,7 @@ than a system fallback. It also removes the Google Fonts GDPR exposure for EU
 consumers and a render-blocking `@import`.
 
 Before this pass the system failed that test twice over: `neon-blackout.css`
-declared the font families and never loaded them, and `component-spec.html`
+declared the font families and never loaded them, and the spec page
 pointed its `@font-face` rules at a path that resolved nowhere, inside a
 gitignored directory. The spec page had been rendering in fallback fonts, with
 no reference to notice it against.
@@ -280,6 +273,3 @@ principles above. They carry no independent authority.
 A `DESIGN.md` and an `AGENTS.md` are not part of this pass. Neither is needed
 for the ranking to hold or the checker to run, and a system documents its
 architecture better once the artifacts have stopped moving.
-- Whether NB gains secondary signature siblings, as NW has.
-- Document ranking and what enforces it.
-- Which of the two token files survives.
