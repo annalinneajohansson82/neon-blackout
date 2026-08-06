@@ -65,6 +65,26 @@
     margin: var(--space-16) 0 var(--space-24);
   }
 
+  /* Usage snippets: what to type to get the thing above. */
+  code, .snippet {
+    font-family: var(--font-mono);
+    font-size: var(--text-mono-min);
+  }
+  .snippet {
+    display: block;
+    background: var(--remembrance-black);
+    border: 1px solid var(--line-soft);
+    border-left: 2px solid var(--transition-cyan);
+    border-radius: var(--radius-sm);
+    padding: var(--space-8) var(--space-12);
+    color: var(--fg);
+    overflow-x: auto;
+    white-space: pre;
+    margin: var(--space-16) 0 var(--space-24);
+  }
+  .snippet .c { color: var(--muted); }
+  .card .snippet { margin: 0; border-radius: 0; border-left: none; border-right: none; border-bottom: none; }
+
   .scroll { overflow-x: auto; }
   table { width: 100%; border-collapse: collapse; font-size: var(--text-sm); }
   th {
@@ -193,21 +213,19 @@
   <header class="masthead">
     <h1>Neon Blackout<br><span class="cyan">preview</span></h1>
     <p class="standfirst">
-      Every colour and component the system ships, in use. This page loads
-      <code class="mono">neon-blackout.css</code> directly — if the stylesheet
-      breaks, this page breaks with it.
+      Every colour and component the system ships, and what to type to get it.
+    </p>
+    <pre class="snippet">&lt;link rel="stylesheet" href="neon-blackout.css"&gt;   <span class="c">&lt;!-- copy fonts/ alongside --&gt;</span></pre>
+    <p class="lede">
+      Why is in <a class="text-link" href="CONTEXT.md">CONTEXT.md</a>. Values are
+      in <a class="text-link" href="tokens.json">tokens.json</a>.
     </p>
   </header>
 
   <!-- ── Surfaces ─────────────────────────────────────────────────────── -->
   <section>
     <h2>Surfaces <span class="count">3</span></h2>
-    <p class="lede">
-      Colour is emitted, never applied. Surfaces exist to be punctuated by
-      light. One of the three is heritage: <code class="mono">--remembrance-black</code>
-      is the flag's Black stripe, so it carries the heritage name rather than a
-      role name.
-    </p>
+    <p class="lede">Three surfaces and two text colours. Use them as <code>var(--void)</code>.</p>
     <div class="scroll">
       <table>
         <thead>
@@ -252,13 +270,7 @@
   <!-- ── Signature ────────────────────────────────────────────────────── -->
   <section>
     <h2>Signature neons <span class="count">2, ours</span></h2>
-    <p class="lede">
-      These carry flag-style names but are not flag colours. No magenta exists
-      in the Progress Pride flag, and the flag's Trans Blue is
-      <code class="mono">#5AD4EC</code>, not this turquoise. They are invented,
-      and naming them as heritage would misrepresent the flag. Because they are
-      ours, we revise them freely.
-    </p>
+    <p class="lede">Ours, not flag colours. Revised freely.</p>
     <div class="scroll">
       <table>
         <thead>
@@ -287,13 +299,7 @@
   <!-- ── Heritage, in use ─────────────────────────────────────────────── -->
   <section>
     <h2>Heritage, carrying a role <span class="count">7 of 13</span></h2>
-    <p class="lede">
-      Taken from the Intersex-Inclusive Progress Pride flag at their exact hex
-      values. Heritage membership is a test, not a preference: a colour is
-      heritage if it appears on the flag. These are never tuned — a heritage
-      colour altered is a colour that no longer refers to the thing it is
-      named for.
-    </p>
+    <p class="lede">Flag colours at their exact hex. Never tune these.</p>
     <div class="scroll">
       <table>
         <thead>
@@ -343,10 +349,7 @@
   <!-- ── Heritage, unused ─────────────────────────────────────────────── -->
   <section>
     <h2>Heritage, shipping unused <span class="count">6 of 13</span></h2>
-    <p class="lede">
-      Declared as tokens, referenced by nothing. A heritage colour does not need
-      a job to deserve its place — it needs to be on the flag.
-    </p>
+    <p class="lede">Available, but nothing in the system uses them.</p>
     <div class="scroll">
       <table>
         <thead>
@@ -391,17 +394,14 @@
   <!-- ── Glow ─────────────────────────────────────────────────────────── -->
   <section>
     <h2>Glow <span class="count">8 colours, 4 strengths</span></h2>
-    <p class="lede">
-      Emission in darkness. Colours derive from palette tokens via
-      <code class="mono">color-mix</code>, never from literals — a hardcoded
-      rgba is a second source of colour that drifts silently. Strengths are
-      uniform across all eight: perceived intensity is almost entirely the
-      core, so a per-colour ceiling on the bloom is invisible, and capping the
-      core removes the punch the system is built on. Intensity is controlled by
-      <code class="mono">prefers-contrast</code> and
-      <code class="mono">--glow-enabled</code>, which follow the viewer's own
-      setting.
-    </p>
+    <p class="lede">Three classes: the base, a colour, a strength.</p>
+    <pre class="snippet">&lt;div class="glow glow-magenta glow-default"&gt;         <span class="c">box-shadow</span>
+&lt;div class="glow-text glow-cyan glow-intense"&gt;       <span class="c">text-shadow</span>
+&lt;div class="glow glow-green glow-max glow-hover"&gt;    <span class="c">on hover and focus</span>
+
+<span class="c">colours    magenta cyan red yellow green orange blue violet
+strengths  glow-subtle glow-default glow-intense glow-max
+off        --glow-enabled: 0, or class="glow-disabled"</span></pre>
     <div class="glow-grid">
       <div class="glow-cell">
         <div class="glow-stage"><span class="tube tube-yel glow glow-yellow glow-max"></span>
@@ -446,9 +446,7 @@
     </div>
 
     <p class="lede" style="margin-top: var(--space-48)">
-      The four strengths, on magenta. Use <code class="mono">glow-max</code> on
-      at most one element per view: a page where everything is at maximum has no
-      hierarchy left, and accumulated bloom is where visual discomfort starts.
+      The four strengths. Use <code>glow-max</code> on one element per view at most.
     </p>
     <div class="glow-grid">
       <div class="glow-cell">
@@ -473,10 +471,7 @@
   <!-- ── Components ───────────────────────────────────────────────────── -->
   <section>
     <h2>Components <span class="count">12</span></h2>
-    <p class="lede">
-      The same colours doing their actual work. Warnings are Sunlight, focus is
-      Transition Cyan, primary is Resistance Magenta.
-    </p>
+    <p class="lede">Every component the stylesheet ships, with its classes.</p>
 
     <div class="grid">
 
@@ -496,6 +491,8 @@
             <button class="btn btn-primary" type="button" disabled>Disabled</button>
           </div>
         </div>
+        <pre class="snippet">btn-primary  btn-ghost  btn-warn  btn-danger
+<span class="c">+ is-loading, disabled</span></pre>
       </div>
 
       <div class="card">
@@ -515,6 +512,8 @@
             <input class="field-input" id="ro" type="text" value="locked" disabled>
           </div>
         </div>
+        <pre class="snippet">field &gt; field-label  field-input  field-err
+<span class="c">+ .error on the input</span></pre>
       </div>
 
       <div class="card">
@@ -532,6 +531,8 @@
             <span class="tag tag-red">failed</span>
           </div>
         </div>
+        <pre class="snippet">tag-mag  tag-cyn  tag-grn  tag-yel
+tag-orn  tag-blf  tag-red     <span class="c">wrap in tag-row</span></pre>
       </div>
 
       <div class="card">
@@ -545,6 +546,7 @@
             <span class="err">signal lost on channel 3</span>
           </div>
         </div>
+        <pre class="snippet">toast-sample &gt; ok  info  staged  warn  err</pre>
       </div>
 
       <div class="panel">
@@ -575,6 +577,10 @@
             before changing a heritage hex.<span class="cursor-demo"></span>
           </p>
         </div>
+        <pre class="snippet">panel &gt; panel-bar &gt; panel-dot  panel-title
+      &gt; panel-body
+list &gt; list-item &gt; list-icon  label  meta
+divider  divider-soft  text-link  cursor-demo</pre>
       </div>
 
       <div class="card">
@@ -595,6 +601,9 @@
             <span class="desc">Nothing is transmitting. Open a channel to begin.</span>
           </div>
         </div>
+        <pre class="snippet">spinner
+skeleton  skeleton-bar  skeleton-block
+empty-state &gt; icon  title  desc</pre>
       </div>
 
     </div>
@@ -604,9 +613,7 @@
   <section>
     <h2>Type <span class="count">1.25 scale, 16px base</span></h2>
     <p class="lede">
-      Three faces, all SIL Open Font Licensed, all self-hosted. Mono has its own
-      floor at <code class="mono">--text-sm</code>: Space Mono carries a small
-      x-height for its size, and the densest text in this system is mono.
+      Three faces, self-hosted. Mono never goes below <code>--text-sm</code>.
     </p>
     <div class="scale-row"><span class="tok">--text-4xl</span><span style="font-family: var(--font-display); font-size: var(--text-4xl)">Breach</span></div>
     <div class="scale-row"><span class="tok">--text-3xl</span><span style="font-family: var(--font-display); font-size: var(--text-3xl)">Breach</span></div>
@@ -622,10 +629,7 @@
   <!-- ── Spacing and radius ───────────────────────────────────────────── -->
   <section>
     <h2>Spacing <span class="count">8px base</span></h2>
-    <p class="lede">
-      All padding, margin, gap and dimensional values come from here. No
-      arbitrary rem values.
-    </p>
+    <p class="lede">Every padding, margin and gap comes from here. No arbitrary values.</p>
     <div class="scale-row"><span class="tok">--space-4</span><span class="space-bar" style="width: var(--space-4)"></span></div>
     <div class="scale-row"><span class="tok">--space-8</span><span class="space-bar" style="width: var(--space-8)"></span></div>
     <div class="scale-row"><span class="tok">--space-12</span><span class="space-bar" style="width: var(--space-12)"></span></div>
