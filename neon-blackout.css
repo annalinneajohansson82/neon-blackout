@@ -1,106 +1,184 @@
 /* Neon Blackout — Design System CSS
- * Version: 1.1
- * Spacing scale: 8px base (--space-4 through --space-96)
- * Radius: --radius-sm(4px) --radius-md(6px) --radius-lg(10px) --radius-full(999px)
- * Source: component-spec.html
+ * Version: 2.0
  * License: CC0
+ *
+ * Authoritative for implementation only. When this file disagrees with
+ * CONTEXT.md or tokens.json, this file is wrong. See CONTEXT.md for the
+ * document ranking and the reasoning behind the palette.
+ *
+ * Verify with: node tools/check-coherence.mjs
  */
 
-/* === 1. Custom Properties (Tokens) === */
+/* === 1. Typography — self-hosted, SIL Open Font License ===
+ * The stylesheet is the deliverable: dropping this file plus fonts/ into a
+ * project gets the real identity rather than a system fallback. Regenerate
+ * with tools/fetch-fonts.sh; never hand-edit fonts/. */
+
+@font-face {
+  font-family: 'Audiowide';
+  src: url('fonts/audiowide-latin.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'SpaceGroteskVF';
+  src: url('fonts/space-grotesk-latin.woff2') format('woff2');
+  font-weight: 300 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'SpaceMono';
+  src: url('fonts/space-mono-latin.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'SpaceMono';
+  src: url('fonts/space-mono-bold-latin.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* === 2. Custom Properties (Tokens) === */
 :root {
-  /* Surfaces */
+  /* ═══ Surfaces ═══
+   * Three surfaces. --remembrance-black is heritage: its hex is the flag's
+   * Black stripe, so the colour carries the heritage name rather than a role
+   * name. --shimmer exists for the skeleton gradient and nothing else. */
   --void: #050507;
-  --elev: #12131c;
-  --raised: #1a1a2e;
-  /* --raised: transient UI only (modals, dropdowns, popovers, toasts) */
-  /* Rule: never use --raised for permanent surfaces */
+  --shimmer: #1a1a2e;
+
+  /* Text */
   --fg: #cfc8ee;
   --muted: #8e88ab;
-  --line: rgba(207,200,238,0.14);
-  --line-soft: rgba(207,200,238,0.07);
+  --line: rgba(207, 200, 238, 0.14);
+  --line-soft: rgba(207, 200, 238, 0.07);
 
-  /* Heritage palette */
-  --autonomy-yellow: #ffd800;
-  --wholeness-violet: #c20ff0;
-  --becoming-white: #ffffff;
-  --resistance-magenta: #ff00aa;
-  --transition-cyan: #00fff0;
-  --lifeblood-red: #ff3864;
-  --mending-orange: #ff9f1c;
-  --pulse-green: #39ff14;
-  --harmony-blue: #00aaff;
-  --spirit-violet: #7b3fd4;
+  /* ═══ Heritage palette — 13 colours of the Intersex-Inclusive Progress
+   * Pride flag, at the flag's own hex values.
+   *
+   * These are never tuned. A heritage colour altered is a colour that no
+   * longer refers to the thing it is named for. Six of the thirteen ship
+   * without a UI role; being on the flag is reason enough to exist. */
+  --autonomy-yellow: #ffd800;     /* Intersex Yellow — free of the binary   */
+  --wholeness-violet: #c20ff0;    /* Intersex Purple — wholeness, autonomy  */
+  --becoming-white: #ffffff;      /* White — trans, nonbinary               */
+  --trans-pink: #ff8fd8;          /* Trans Pink — trans community           */
+  --trans-blue: #5ad4ec;          /* Trans Blue — trans community           */
+  --kinship-brown: #c98745;       /* Brown — people of colour               */
+  --remembrance-black: #12131c;   /* Black — POC, lives lost to AIDS        */
+  --lifeblood-red: #ff3864;       /* Life — red stripe                      */
+  --mending-orange: #ff9f1c;      /* Healing — orange stripe                */
+  --sunlight-yellow: #fcee09;     /* Sunlight — yellow stripe               */
+  --pulse-green: #39ff14;         /* Nature — green stripe                  */
+  --harmony-blue: #00aaff;        /* Harmony — blue stripe                  */
+  --spirit-violet: #7b3fd4;       /* Spirit — violet stripe                 */
 
-  /* Background tints (color-mix at opacity) */
+  /* ═══ Signature neons — ours, not flag colours ═══
+   * No magenta exists in the Progress Pride flag, and the flag's Trans Blue
+   * is #5ad4ec, not this turquoise. They carry flag-style names but are
+   * invented, and we revise them freely. */
+  --resistance-magenta: #ff00aa;  /* Brand identity, primary action */
+  --transition-cyan: #00fff0;     /* Focus, cursor, active indicator */
+
+  /* Background tints — computed, not authored */
   --resistance-magenta-bg: color-mix(in srgb, var(--resistance-magenta) 15%, transparent);
   --transition-cyan-bg: color-mix(in srgb, var(--transition-cyan) 12%, transparent);
   --lifeblood-red-bg: color-mix(in srgb, var(--lifeblood-red) 25%, transparent);
-  --autonomy-yellow-bg: color-mix(in srgb, var(--autonomy-yellow) 12%, transparent);
+  --sunlight-yellow-bg: color-mix(in srgb, var(--sunlight-yellow) 12%, transparent);
   --pulse-green-bg: color-mix(in srgb, var(--pulse-green) 12%, transparent);
   --mending-orange-bg: color-mix(in srgb, var(--mending-orange) 15%, transparent);
   --harmony-blue-bg: color-mix(in srgb, var(--harmony-blue) 12%, transparent);
 
-  /* Typography */
+  /* ═══ Type ═══
+   * 1.25 modular scale on a 16px base. --text-4xl is the ceiling: above it a
+   * heading is shouting rather than designing. --text-xs is the floor, and
+   * mono does not use it — see --text-mono-min. */
   --font-display: 'Audiowide', sans-serif;
   --font-body: 'SpaceGroteskVF', system-ui, sans-serif;
-  --font-mono: 'SpaceMono', monospace;
+  --font-mono: 'SpaceMono', ui-monospace, monospace;
+
+  --text-xs: 0.75rem;     /* 12px — labels and badges, body only */
+  --text-sm: 0.875rem;    /* 14px — captions, meta, all mono UI text */
+  --text-base: 1rem;      /* 16px — body */
+  --text-lg: 1.25rem;     /* 20px — lede, h4 */
+  --text-xl: 1.5rem;      /* 24px — h3 */
+  --text-2xl: 1.875rem;   /* 30px — h2 */
+  --text-3xl: 2.25rem;    /* 36px — h1 */
+  --text-4xl: 3rem;       /* 48px — hero, ceiling */
+
+  /* Space Mono carries a small x-height for its size, and the densest text in
+   * this system is mono. It never uses --text-xs. */
+  --text-mono-min: var(--text-sm);
 
   /* ═══ Spacing scale — 8px base ═══
-   * All spacing tokens derive from 0.5rem (8px) increments.
-   * Use these for padding, margin, gap, and dimensional values.
-   * Do not use arbitrary rem values. */
-  --space-4: 4px;    /* xs  — tag inner Y, tight gaps */
-  --space-8: 8px;    /* sm  — button Y, tag X, small gaps, list item Y */
-  --space-12: 12px;  /* md  — button X, input X, list item X, medium gaps */
-  --space-16: 16px;  /* lg  — input X alternative, section head gaps, divider margin */
-  --space-24: 24px;  /* xl  — spec body padding, panel body, demo gaps */
-  --space-32: 32px;  /* 2xl — panel body (roomy), section spacing top */
-  --space-40: 40px;  /*     — section spacing (tight) */
-  --space-48: 48px;  /* 3xl — section spacing, footer top */
-  --space-64: 64px;  /* 4xl — footer spacing, hero bottom */
-  --space-80: 80px;  /* 5xl — header top, hero sections */
-  --space-96: 96px;  /* 6xl — page sections, generous hero spacing */
+   * Use these for padding, margin, gap and dimensional values. No arbitrary
+   * rem values. */
+  --space-4: 4px;
+  --space-8: 8px;
+  --space-12: 12px;
+  --space-16: 16px;
+  --space-24: 24px;
+  --space-32: 32px;
+  --space-40: 40px;
+  --space-48: 48px;
+  --space-64: 64px;
+  --space-80: 80px;
+  --space-96: 96px;
 
-  /* ═══ Border radius ═══
-   * --radius-sm is for subtle/corners.
-   * --radius-md (6px) is the default for interactive elements.
-   * --radius-lg (10px) is for containers (panels, cards, spec wrappers).
-   * --radius-full is for pills/tags/badges. */
-  --radius-sm: 4px;
-  --radius-md: 6px;
-  --radius-lg: 10px;
-  --radius-full: 999px;
+  /* ═══ Border radius ═══ */
+  --radius-sm: 4px;       /* List items, subtle corners */
+  --radius-md: 6px;       /* Buttons, inputs, toasts — the interactive default */
+  --radius-lg: 10px;      /* Panels, cards, containers */
+  --radius-full: 999px;   /* Pills, badges, tags */
 
-  /* Glow system toggle (set to 0 to disable globally) */
+  /* ═══ Glow ═══
+   * Strengths are uniform across all eight colours. A per-colour luminance
+   * ceiling was designed and rejected: perceived intensity is almost entirely
+   * the core, so capping the bloom is invisible, and capping the core removes
+   * the punch that makes this read as neon rather than as tinted shadow.
+   *
+   * Discomfort is controlled by the viewer, not guessed at per colour — see
+   * prefers-contrast below and --glow-enabled here. */
   --glow-enabled: 1;
+  --glow-core-alpha: 0.9;
 }
 
-/* Circle utility — forces perfect circle regardless of content */
+/* === 3. Base Reset === */
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+* { margin: 0; padding: 0; }
+
+body {
+  background: var(--void);
+  color: var(--fg);
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: 1.6;
+}
+
+/* Forces a perfect circle regardless of content */
 .circle {
   border-radius: 50%;
   aspect-ratio: 1;
 }
 
-/* === 2. Base Reset === */
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body {
-  background: var(--void);
-  color: var(--fg);
-  font-family: var(--font-body);
-  font-size: 16px;
-  line-height: 1.6;
-}
-
-/* === 3. Focus === */
+/* === 4. Focus === */
 :focus-visible {
   outline: 2px solid var(--transition-cyan);
   outline-offset: 2px;
 }
 
-/* === 4. Button === */
+/* === 5. Button === */
 .btn {
   font-family: var(--font-mono);
-  font-size: 0.78rem;
+  font-size: var(--text-mono-min);
   letter-spacing: 0.08em;
   text-transform: uppercase;
   padding: var(--space-8) var(--space-16);
@@ -127,24 +205,44 @@ body {
   text-decoration: none;
 }
 
-.btn-primary { background: var(--resistance-magenta); color: #0a0a14; }
+/* Each variant declares its own spinner colour. The loading state sets
+ * color: transparent to hide the label, which also makes currentColor
+ * transparent — a spinner drawn in currentColor would be invisible. */
+.btn-primary {
+  background: var(--resistance-magenta);
+  color: #0a0a14;
+  --btn-spinner: #0a0a14;
+}
 .btn-primary:hover,
 .btn-primary:focus-visible { background: #cc008a; }
 
-.btn-ghost { background: transparent; color: var(--transition-cyan); border: 1px solid var(--transition-cyan); }
-.btn-ghost:hover { background: rgba(0, 255, 240, 0.1); }
+.btn-ghost {
+  background: transparent;
+  color: var(--transition-cyan);
+  border: 1px solid var(--transition-cyan);
+  --btn-spinner: var(--transition-cyan);
+}
+.btn-ghost:hover { background: color-mix(in srgb, var(--transition-cyan) 10%, transparent); }
 
-.btn-warn { background: var(--autonomy-yellow); color: #0e0c00; }
-.btn-warn:hover { background: #ccad00; }
+.btn-warn {
+  background: var(--sunlight-yellow);
+  color: #0e0c00;
+  --btn-spinner: #0e0c00;
+}
+.btn-warn:hover { background: #cabe07; }
 
-.btn-danger { background: var(--lifeblood-red); color: #ffffff; }
+.btn-danger {
+  background: var(--lifeblood-red);
+  color: #ffffff;
+  --btn-spinner: #ffffff;
+}
 .btn-danger:hover { background: #cc002d; }
 
-/* === 5. Input / Field === */
+/* === 6. Input / Field === */
 .field { display: flex; flex-direction: column; gap: var(--space-4); }
 .field-label {
   font-family: var(--font-mono);
-  font-size: 0.78rem;
+  font-size: var(--text-mono-min);
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--muted);
@@ -156,7 +254,7 @@ body {
   padding: var(--space-8) var(--space-12);
   color: var(--fg);
   font-family: var(--font-mono);
-  font-size: 0.8rem;
+  font-size: var(--text-mono-min);
 }
 .field-input::placeholder { color: #a6a0c0; }
 .field-input:focus-visible {
@@ -170,26 +268,26 @@ body {
 }
 .field-input.error {
   border-color: var(--lifeblood-red);
-  box-shadow: 0 0 0 2px rgba(255,56,100,0.15);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--lifeblood-red) 15%, transparent);
 }
 .field-input:disabled,
 .field-input[aria-disabled="true"] {
   opacity: 0.35;
   cursor: not-allowed;
-  background: var(--elev);
+  background: var(--remembrance-black);
   border-color: var(--line-soft);
 }
 .field-err {
   font-family: var(--font-mono);
-  font-size: 0.78rem;
+  font-size: var(--text-mono-min);
   color: var(--lifeblood-red);
 }
 
-/* === 6. Tag === */
+/* === 7. Tag === */
 .tag-row { display: flex; gap: var(--space-4); flex-wrap: wrap; }
 .tag {
   font-family: var(--font-mono);
-  font-size: 0.78rem;
+  font-size: var(--text-mono-min);
   padding: var(--space-4) var(--space-8);
   border-radius: var(--radius-full);
   letter-spacing: 0.04em;
@@ -197,24 +295,27 @@ body {
 .tag-mag { background: var(--resistance-magenta-bg); color: var(--resistance-magenta); }
 .tag-cyn { background: var(--transition-cyan-bg); color: var(--transition-cyan); }
 .tag-red { background: var(--lifeblood-red-bg); color: #ffffff; }
-.tag-yel { background: var(--autonomy-yellow-bg); color: var(--autonomy-yellow); }
+.tag-yel { background: var(--sunlight-yellow-bg); color: var(--sunlight-yellow); }
 .tag-grn { background: var(--pulse-green-bg); color: var(--pulse-green); }
 .tag-orn { background: var(--mending-orange-bg); color: var(--mending-orange); }
 .tag-blf { background: var(--harmony-blue-bg); color: var(--harmony-blue); }
 
-/* === 7. Toast === */
+/* === 8. Toast === */
 .toast-sample {
-  display: flex; flex-direction: column; gap: var(--space-8);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
   font-family: var(--font-mono);
-  font-size: 0.78rem;
+  font-size: var(--text-mono-min);
   line-height: 2;
 }
 .toast-sample .ok { color: var(--pulse-green); }
 .toast-sample .err { color: var(--lifeblood-red); }
-.toast-sample .warn { color: var(--autonomy-yellow); }
+.toast-sample .warn { color: var(--sunlight-yellow); }
 .toast-sample .info { color: var(--harmony-blue); }
+.toast-sample .staged { color: var(--mending-orange); }
 
-/* === 8. Panel === */
+/* === 9. Panel === */
 .panel {
   border: 1px solid var(--line);
   border-radius: var(--radius-lg);
@@ -232,13 +333,13 @@ body {
 .panel-title {
   margin-left: var(--space-8);
   font-family: var(--font-mono);
-  font-size: 0.78rem;
+  font-size: var(--text-mono-min);
   color: var(--muted);
   letter-spacing: 0.08em;
 }
 .panel-body { padding: var(--space-24); }
 
-/* === 9. List === */
+/* === 10. List === */
 .list { display: flex; flex-direction: column; }
 .list-item {
   display: flex;
@@ -246,12 +347,12 @@ body {
   gap: var(--space-8);
   padding: var(--space-8) var(--space-12);
   border-radius: var(--radius-sm);
-  font-size: 0.8rem;
+  font-size: var(--text-sm);
   cursor: pointer;
   transition: background 0.1s;
 }
-.list-item:hover { background: rgba(207,200,238,0.04); }
-.list-item:active { background: rgba(207,200,238,0.08); }
+.list-item:hover { background: rgba(207, 200, 238, 0.04); }
+.list-item:active { background: rgba(207, 200, 238, 0.08); }
 .list-item:focus-visible {
   outline: 2px solid var(--transition-cyan);
   outline-offset: 2px;
@@ -262,15 +363,19 @@ body {
   cursor: not-allowed;
   pointer-events: none;
 }
-.list-icon { font-size: 0.8rem; }
+.list-icon { font-size: var(--text-sm); }
 .list-item .label { flex: 1; }
-.list-item .meta { font-family: var(--font-mono); font-size: 0.78rem; color: var(--muted); }
+.list-item .meta {
+  font-family: var(--font-mono);
+  font-size: var(--text-mono-min);
+  color: var(--muted);
+}
 
-/* === 10. Divider === */
+/* === 11. Divider === */
 .divider { height: 1px; background: var(--line); margin: 0; }
 .divider-soft { height: 1px; background: var(--line-soft); margin: var(--space-16) 0; }
 
-/* === 11. Text Link === */
+/* === 12. Text Link === */
 .text-link {
   color: var(--transition-cyan);
   text-decoration: underline;
@@ -283,7 +388,7 @@ body {
 .text-link:focus-visible {
   color: var(--becoming-white);
   text-decoration: none;
-  text-shadow: 0 0 8px rgba(0,255,240,0.4);
+  text-shadow: 0 0 8px color-mix(in srgb, var(--transition-cyan) 40%, transparent);
 }
 .text-link:focus-visible {
   outline: 2px solid var(--transition-cyan);
@@ -291,100 +396,103 @@ body {
   border-radius: 2px;
 }
 
-/* === 12. Glow System === */
+/* === 13. Glow System ===
+ * Colours derive from palette tokens. Never write a literal here: a hardcoded
+ * rgba is a second source of colour that drifts from the palette silently,
+ * and the stylesheet cannot report it. */
 .glow {
   position: relative;
   z-index: 0;
   transition: box-shadow 0.2s;
 }
 
-.glow-magenta { --glow-color: rgba(255, 0, 170, var(--glow-alpha, 1)); }
-.glow-cyan    { --glow-color: rgba(0, 255, 240, var(--glow-alpha, 1)); }
-.glow-red     { --glow-color: rgba(255, 56, 100, var(--glow-alpha, 1)); }
-.glow-yellow  { --glow-color: rgba(255, 216, 0, var(--glow-alpha, 1)); }
-.glow-green   { --glow-color: rgba(57, 255, 20, var(--glow-alpha, 1)); }
-.glow-orange  { --glow-color: rgba(255, 159, 28, var(--glow-alpha, 1)); }
-.glow-blue    { --glow-color: rgba(0, 170, 255, var(--glow-alpha, 1)); }
-.glow-violet  { --glow-color: rgba(123, 63, 212, var(--glow-alpha, 1)); }
+.glow-magenta { --glow-hue: var(--resistance-magenta); }
+.glow-cyan    { --glow-hue: var(--transition-cyan); }
+.glow-red     { --glow-hue: var(--lifeblood-red); }
+.glow-yellow  { --glow-hue: var(--sunlight-yellow); }
+.glow-green   { --glow-hue: var(--pulse-green); }
+.glow-orange  { --glow-hue: var(--mending-orange); }
+.glow-blue    { --glow-hue: var(--harmony-blue); }
+.glow-violet  { --glow-hue: var(--spirit-violet); }
 
-.glow-subtle { --glow-spread: 6px;  --glow-intense: 0;    --glow-alpha: 0.35; --glow-bloom: 0; }
-.glow-default { --glow-spread: 16px; --glow-intense: 0;    --glow-alpha: 0.45; --glow-bloom: 0; }
-.glow-intense { --glow-spread: 16px; --glow-intense: 32px; --glow-alpha: 0.65; --glow-bloom: 0; }
-/* glow-max — use extremely sparingly. 80% alpha at 48px bloom can cause visual discomfort (autism, migraine). Max 1 element per view. */
-.glow-max     { --glow-spread: 22px; --glow-intense: 48px; --glow-alpha: 0.8;  --glow-bloom: 0; }
+/* The core carries the punch; the outer layers are falloff. Neon reads as
+ * emission because a bright core is visible inside the scatter — a halo with
+ * no core reads as a tinted shadow. */
+.glow,
+.glow-text {
+  --glow-core: color-mix(in srgb, var(--glow-hue, transparent)
+                calc(var(--glow-core-alpha, 0.9) * var(--glow-enabled, 1) * 100%), transparent);
+  --glow-color: color-mix(in srgb, var(--glow-hue, transparent)
+                 calc(var(--glow-alpha, 0.45) * var(--glow-enabled, 1) * 100%), transparent);
+  --glow-far: color-mix(in srgb, var(--glow-hue, transparent)
+               calc(var(--glow-alpha, 0.45) * var(--glow-enabled, 1) * 66%), transparent);
+}
 
-.glow.glow-default { box-shadow: 0 0 var(--glow-spread, 16px) var(--glow-color, transparent); }
-.glow.glow-intense { box-shadow: 0 0 var(--glow-spread, 16px) var(--glow-color, transparent), 0 0 var(--glow-intense, 32px) color-mix(in srgb, var(--glow-color, transparent) 40%, transparent); }
-.glow.glow-subtle { box-shadow: 0 0 var(--glow-spread, 4px) var(--glow-color, transparent); }
-.glow.glow-max { box-shadow: 0 0 var(--glow-spread, 22px) var(--glow-color, transparent), 0 0 var(--glow-intense, 48px) color-mix(in srgb, var(--glow-color, transparent) 30%, transparent); }
+.glow-subtle  { --glow-spread: 8px;  --glow-far-spread: 0;    --glow-alpha: 0.35; }
+.glow-default { --glow-spread: 20px; --glow-far-spread: 0;    --glow-alpha: 0.45; }
+.glow-intense { --glow-spread: 26px; --glow-far-spread: 52px; --glow-alpha: 0.5; }
+/* glow-max is the ceiling. Use it on at most one element per view: a page
+ * where everything is at maximum has no hierarchy left, and the accumulated
+ * bloom is where visual discomfort starts. */
+.glow-max     { --glow-spread: 30px; --glow-far-spread: 64px; --glow-alpha: 0.55; }
 
-.glow-hover:hover { box-shadow: 0 0 var(--glow-spread, 16px) var(--glow-color, transparent), 0 0 calc(var(--glow-spread, 16px) * 2) color-mix(in srgb, var(--glow-color, transparent) 40%, transparent); }
-.glow-hover:focus-visible { box-shadow: 0 0 var(--glow-spread, 16px) var(--glow-color, transparent), 0 0 calc(var(--glow-spread, 16px) * 2) color-mix(in srgb, var(--glow-color, transparent) 40%, transparent); }
+.glow.glow-subtle {
+  box-shadow: 0 0 8px var(--glow-core),
+              0 0 var(--glow-spread) var(--glow-color);
+}
+.glow.glow-default {
+  box-shadow: 0 0 10px var(--glow-core),
+              0 0 var(--glow-spread) var(--glow-color);
+}
+.glow.glow-intense {
+  box-shadow: 0 0 10px var(--glow-core),
+              0 0 var(--glow-spread) var(--glow-color),
+              0 0 var(--glow-far-spread) var(--glow-far);
+}
+.glow.glow-max {
+  box-shadow: 0 0 12px var(--glow-core),
+              0 0 var(--glow-spread) var(--glow-color),
+              0 0 var(--glow-far-spread) var(--glow-far);
+}
+
+.glow-hover:hover,
+.glow-hover:focus-visible {
+  box-shadow: 0 0 10px var(--glow-core),
+              0 0 var(--glow-spread, 20px) var(--glow-color),
+              0 0 calc(var(--glow-spread, 20px) * 2) var(--glow-far);
+}
 
 /* Text glow */
-.glow-text.glow-default { text-shadow: 0 0 var(--glow-spread, 16px) var(--glow-color, transparent); }
-.glow-text.glow-intense { text-shadow: 0 0 var(--glow-spread, 16px) var(--glow-color, transparent), 0 0 var(--glow-intense, 32px) color-mix(in srgb, var(--glow-color, transparent) 40%, transparent); }
-.glow-text.glow-subtle { text-shadow: 0 0 var(--glow-spread, 4px) var(--glow-color, transparent); }
-.glow-text.glow-max { text-shadow: 0 0 var(--glow-spread, 22px) var(--glow-color, transparent), 0 0 var(--glow-intense, 48px) color-mix(in srgb, var(--glow-color, transparent) 30%, transparent); }
-
-.glow-text.glow-hover:hover { text-shadow: 0 0 var(--glow-spread, 16px) var(--glow-color, transparent), 0 0 calc(var(--glow-spread, 16px) * 2) color-mix(in srgb, var(--glow-color, transparent) 40%, transparent); }
-.glow-text.glow-hover:focus-visible { text-shadow: 0 0 var(--glow-spread, 16px) var(--glow-color, transparent), 0 0 calc(var(--glow-spread, 16px) * 2) color-mix(in srgb, var(--glow-color, transparent) 40%, transparent); }
-
-/* Glow disabled */
-body:has([style*="--glow-enabled: 0"]),
-.glow-disabled {
-  --glow-alpha: 0 !important;
+.glow-text.glow-subtle {
+  text-shadow: 0 0 6px var(--glow-core),
+               0 0 var(--glow-spread) var(--glow-color);
+}
+.glow-text.glow-default {
+  text-shadow: 0 0 8px var(--glow-core),
+               0 0 var(--glow-spread) var(--glow-color);
+}
+.glow-text.glow-intense {
+  text-shadow: 0 0 8px var(--glow-core),
+               0 0 var(--glow-spread) var(--glow-color),
+               0 0 var(--glow-far-spread) var(--glow-far);
+}
+.glow-text.glow-max {
+  text-shadow: 0 0 10px var(--glow-core),
+               0 0 var(--glow-spread) var(--glow-color),
+               0 0 var(--glow-far-spread) var(--glow-far);
 }
 
-/* === 13. Reduced Motion === */
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-  .cursor-demo {
-    animation: none;
-    background: var(--transition-cyan);
-    opacity: 0.6;
-  }
+.glow-text.glow-hover:hover,
+.glow-text.glow-hover:focus-visible {
+  text-shadow: 0 0 8px var(--glow-core),
+               0 0 var(--glow-spread, 20px) var(--glow-color),
+               0 0 calc(var(--glow-spread, 20px) * 2) var(--glow-far);
 }
 
-/* === 14. Contrast Preferences === */
-@media (prefers-contrast: more) {
-  :root {
-    --line: rgba(207,200,238,0.35);
-    --line-soft: rgba(207,200,238,0.2);
-    --glow-alpha: 0.9 !important;
-  }
-  .btn {
-    border: 1px solid var(--fg);
-  }
-  .field-input {
-    border-width: 2px;
-  }
-  .tag {
-    border: 1px solid currentColor;
-  }
-}
+/* Kill switch. Set --glow-enabled: 0 on :root or any subtree. */
+.glow-disabled { --glow-enabled: 0; }
 
-@media (prefers-contrast: less) {
-  :root {
-    --glow-alpha: 0.25 !important;
-  }
-  .glow-max {
-    --glow-alpha: 0.4 !important;
-    --glow-spread: 12px;
-    --glow-intense: 20px;
-  }
-  .btn {
-    opacity: 0.9;
-  }
-}
-
-/* === 15. Cursor === */
+/* === 14. Cursor === */
 .cursor-demo {
   display: inline-block;
   width: 8px;
@@ -420,7 +528,7 @@ body:has([style*="--glow-enabled: 0"]),
   width: 1em;
   height: 1em;
   margin: -0.5em 0 0 -0.5em;
-  border: 1.5px solid currentColor;
+  border: 1.5px solid var(--btn-spinner, var(--fg));
   border-top-color: transparent;
   border-radius: 50%;
   animation: spin 0.6s linear infinite;
@@ -433,7 +541,10 @@ body:has([style*="--glow-enabled: 0"]),
   100% { background-position: 200% 0; }
 }
 .skeleton {
-  background: linear-gradient(90deg, var(--elev) 25%, var(--raised) 50%, var(--elev) 75%);
+  background: linear-gradient(90deg,
+              var(--remembrance-black) 25%,
+              var(--shimmer) 50%,
+              var(--remembrance-black) 75%);
   background-size: 200% 100%;
   animation: shimmer 1.5s ease-in-out infinite;
   border-radius: var(--radius-sm);
@@ -441,13 +552,8 @@ body:has([style*="--glow-enabled: 0"]),
   margin-bottom: var(--space-8);
 }
 .skeleton:last-child { width: 60%; margin-bottom: 0; }
-.skeleton-bar {
-  width: 30%;
-  height: 0.8rem;
-}
-.skeleton-block {
-  height: 4rem;
-}
+.skeleton-bar { width: 30%; height: 0.8rem; }
+.skeleton-block { height: 4rem; }
 
 /* === 17. Empty State === */
 .empty-state {
@@ -463,20 +569,59 @@ body:has([style*="--glow-enabled: 0"]),
   background: var(--void);
 }
 .empty-state .icon {
-  font-size: 2rem;
+  font-size: var(--text-2xl);
   line-height: 1;
   opacity: 0.4;
 }
 .empty-state .title {
   font-family: var(--font-mono);
-  font-size: 0.78rem;
+  font-size: var(--text-mono-min);
   color: var(--muted);
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 .empty-state .desc {
-  font-size: 0.82rem;
+  font-size: var(--text-sm);
   color: var(--muted);
   max-width: 24rem;
   line-height: 1.5;
+}
+
+/* === 18. Reduced Motion === */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .cursor-demo {
+    animation: none;
+    background: var(--transition-cyan);
+    opacity: 0.6;
+  }
+}
+
+/* === 19. Contrast Preferences ===
+ * This is where glow intensity is actually controlled: by what the viewer has
+ * already asked for, rather than by the system guessing per colour. */
+@media (prefers-contrast: more) {
+  :root {
+    --line: rgba(207, 200, 238, 0.35);
+    --line-soft: rgba(207, 200, 238, 0.2);
+    --glow-core-alpha: 1;
+  }
+  .btn { border: 1px solid var(--fg); }
+  .field-input { border-width: 2px; }
+  .tag { border: 1px solid currentColor; }
+}
+
+@media (prefers-contrast: less) {
+  :root { --glow-core-alpha: 0.4; }
+  .glow-subtle  { --glow-alpha: 0.15; }
+  .glow-default { --glow-alpha: 0.2; }
+  .glow-intense { --glow-alpha: 0.22; --glow-spread: 16px; --glow-far-spread: 28px; }
+  .glow-max     { --glow-alpha: 0.25; --glow-spread: 18px; --glow-far-spread: 32px; }
+  .btn { opacity: 0.9; }
 }
