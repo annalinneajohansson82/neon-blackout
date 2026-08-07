@@ -205,7 +205,14 @@ body {
   text-decoration: none;
 }
 
-.btn-primary { background: var(--resistance-magenta); color: #0a0a14; }
+/* Each variant declares its own spinner colour. The loading state sets
+ * color: transparent to hide the label, which also makes currentColor
+ * transparent — a spinner drawn in currentColor would be invisible. */
+.btn-primary {
+  background: var(--resistance-magenta);
+  color: #0a0a14;
+  --btn-spinner: #0a0a14;
+}
 .btn-primary:hover,
 .btn-primary:focus-visible { background: #cc008a; }
 
@@ -213,13 +220,22 @@ body {
   background: transparent;
   color: var(--transition-cyan);
   border: 1px solid var(--transition-cyan);
+  --btn-spinner: var(--transition-cyan);
 }
 .btn-ghost:hover { background: color-mix(in srgb, var(--transition-cyan) 10%, transparent); }
 
-.btn-warn { background: var(--sunlight-yellow); color: #0e0c00; }
+.btn-warn {
+  background: var(--sunlight-yellow);
+  color: #0e0c00;
+  --btn-spinner: #0e0c00;
+}
 .btn-warn:hover { background: #cabe07; }
 
-.btn-danger { background: var(--lifeblood-red); color: #ffffff; }
+.btn-danger {
+  background: var(--lifeblood-red);
+  color: #ffffff;
+  --btn-spinner: #ffffff;
+}
 .btn-danger:hover { background: #cc002d; }
 
 /* === 6. Input / Field === */
@@ -512,7 +528,7 @@ body {
   width: 1em;
   height: 1em;
   margin: -0.5em 0 0 -0.5em;
-  border: 1.5px solid currentColor;
+  border: 1.5px solid var(--btn-spinner, var(--fg));
   border-top-color: transparent;
   border-radius: 50%;
   animation: spin 0.6s linear infinite;

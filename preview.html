@@ -79,7 +79,9 @@
     padding: var(--space-8) var(--space-12);
     color: var(--fg);
     overflow-x: auto;
-    white-space: pre;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    line-height: 1.7;
     margin: var(--space-16) 0 var(--space-24);
   }
   .snippet .c { color: var(--muted); }
@@ -491,7 +493,8 @@ off        --glow-enabled: 0, or class="glow-disabled"</span></pre>
             <button class="btn btn-primary" type="button" disabled>Disabled</button>
           </div>
         </div>
-        <pre class="snippet">btn-primary  btn-ghost  btn-warn  btn-danger
+        <pre class="snippet">btn-primary  btn-ghost
+btn-warn     btn-danger
 <span class="c">+ is-loading, disabled</span></pre>
       </div>
 
@@ -512,7 +515,8 @@ off        --glow-enabled: 0, or class="glow-disabled"</span></pre>
             <input class="field-input" id="ro" type="text" value="locked" disabled>
           </div>
         </div>
-        <pre class="snippet">field &gt; field-label  field-input  field-err
+        <pre class="snippet">field
+  field-label  field-input  field-err
 <span class="c">+ .error on the input</span></pre>
       </div>
 
@@ -531,8 +535,9 @@ off        --glow-enabled: 0, or class="glow-disabled"</span></pre>
             <span class="tag tag-red">failed</span>
           </div>
         </div>
-        <pre class="snippet">tag-mag  tag-cyn  tag-grn  tag-yel
-tag-orn  tag-blf  tag-red     <span class="c">wrap in tag-row</span></pre>
+        <pre class="snippet">tag-mag  tag-cyn  tag-grn
+tag-yel  tag-orn  tag-blf  tag-red
+<span class="c">wrap in tag-row</span></pre>
       </div>
 
       <div class="card">
@@ -546,7 +551,8 @@ tag-orn  tag-blf  tag-red     <span class="c">wrap in tag-row</span></pre>
             <span class="err">signal lost on channel 3</span>
           </div>
         </div>
-        <pre class="snippet">toast-sample &gt; ok  info  staged  warn  err</pre>
+        <pre class="snippet">toast-sample
+  ok  info  staged  warn  err</pre>
       </div>
 
       <div class="panel">
@@ -577,9 +583,11 @@ tag-orn  tag-blf  tag-red     <span class="c">wrap in tag-row</span></pre>
             before changing a heritage hex.<span class="cursor-demo"></span>
           </p>
         </div>
-        <pre class="snippet">panel &gt; panel-bar &gt; panel-dot  panel-title
-      &gt; panel-body
-list &gt; list-item &gt; list-icon  label  meta
+        <pre class="snippet">panel
+  panel-bar   panel-dot  panel-title
+  panel-body
+list
+  list-item   list-icon  label  meta
 divider  divider-soft  text-link  cursor-demo</pre>
       </div>
 
